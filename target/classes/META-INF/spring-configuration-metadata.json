@@ -1,0 +1,49 @@
+{
+  "groups": [
+    {
+      "name": "spring.social.github",
+      "type": "com.liyuan.github.autoconfiguration.GithubProperties",
+      "sourceType": "com.liyuan.github.autoconfiguration.GithubProperties"
+    },
+    {
+      "name": "spring.social.wechat",
+      "type": "com.liyuan.wechat.autoconfiguration.WechatProperties",
+      "sourceType": "com.liyuan.wechat.autoconfiguration.WechatProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.social.github.client-id",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.github.autoconfiguration.GithubProperties"
+    },
+    {
+      "name": "spring.social.github.client-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.github.autoconfiguration.GithubProperties"
+    },
+    {
+      "name": "spring.social.github.scope",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.github.autoconfiguration.GithubProperties",
+      "defaultValue": "user"
+    },
+    {
+      "name": "spring.social.wechat.app-id",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.wechat.autoconfiguration.WechatProperties"
+    },
+    {
+      "name": "spring.social.wechat.app-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.wechat.autoconfiguration.WechatProperties"
+    },
+    {
+      "name": "spring.social.wechat.scope",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.wechat.autoconfiguration.WechatProperties",
+      "defaultValue": "snsapi_login"
+    }
+  ],
+  "hints": []
+}
