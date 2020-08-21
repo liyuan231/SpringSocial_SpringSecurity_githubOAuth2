@@ -1,6 +1,11 @@
 {
   "groups": [
     {
+      "name": "jwt.config",
+      "type": "com.liyuan.utils.jwt.JwtProperties",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
+    {
       "name": "spring.social.github",
       "type": "com.liyuan.github.autoconfiguration.GithubProperties",
       "sourceType": "com.liyuan.github.autoconfiguration.GithubProperties"
@@ -12,6 +17,43 @@
     }
   ],
   "properties": [
+    {
+      "name": "jwt.config.access-expire-days",
+      "type": "java.lang.Integer",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "jwt.config.issuer",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
+    {
+      "name": "jwt.config.key-alias",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
+    {
+      "name": "jwt.config.key-location",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
+    {
+      "name": "jwt.config.key-pass",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
+    {
+      "name": "jwt.config.refresh-expire-days",
+      "type": "java.lang.Integer",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "jwt.config.subscriber",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
     {
       "name": "spring.social.github.client-id",
       "type": "java.lang.String",

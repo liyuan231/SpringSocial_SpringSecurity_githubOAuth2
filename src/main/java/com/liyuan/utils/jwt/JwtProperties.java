@@ -4,10 +4,45 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "jwt.config")
 public class JwtProperties {
+    private String keyLocation;
+    private String keyAlias;
+    private String keyPass;
     private String issuer;
     private String subscriber;
-    private int expireDays;
+    private int accessExpireDays;
     private int refreshExpireDays;
+
+    public String getKeyLocation() {
+        return keyLocation;
+    }
+
+    public void setKeyLocation(String keyLocation) {
+        this.keyLocation = keyLocation;
+    }
+
+    public String getKeyAlias() {
+        return keyAlias;
+    }
+
+    public void setKeyAlias(String keyAlias) {
+        this.keyAlias = keyAlias;
+    }
+
+    public String getKeyPass() {
+        return keyPass;
+    }
+
+    public void setKeyPass(String keyPass) {
+        this.keyPass = keyPass;
+    }
+
+    public int getAccessExpireDays() {
+        return accessExpireDays;
+    }
+
+    public void setAccessExpireDays(int accessExpireDays) {
+        this.accessExpireDays = accessExpireDays;
+    }
 
     public String getIssuer() {
         return issuer;
@@ -23,14 +58,6 @@ public class JwtProperties {
 
     public void setSubscriber(String subscriber) {
         this.subscriber = subscriber;
-    }
-
-    public int getExpireDays() {
-        return expireDays;
-    }
-
-    public void setExpireDays(int expireDays) {
-        this.expireDays = expireDays;
     }
 
     public int getRefreshExpireDays() {
