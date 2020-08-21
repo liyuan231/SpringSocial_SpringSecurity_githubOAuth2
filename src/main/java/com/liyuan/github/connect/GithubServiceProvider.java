@@ -22,7 +22,6 @@ public class GithubServiceProvider<T extends Github> extends AbstractOAuth2Servi
                 clientSecret,
                 REQUEST_USER_IDENTITY,
                 UrlConstants.ACCESS_TOKEN_API_URL);
-        //TODO 这是什么
         oAuth2Template.setUseParametersForClientAuthentication(true);
         return oAuth2Template;
     }

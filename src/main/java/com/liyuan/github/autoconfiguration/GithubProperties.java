@@ -7,7 +7,6 @@ public class GithubProperties {
     private String scope = "user";
     private String clientId;
     private String clientSecret;
-
     public String getScope() {
         return scope;
     }

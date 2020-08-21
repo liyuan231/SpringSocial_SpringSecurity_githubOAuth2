@@ -4,6 +4,7 @@ import com.liyuan.github.api.Github;
 import com.liyuan.github.connect.GithubConnectionFactory;
 import com.liyuan.social.SocialAutoConfigurerAdapter;
 import com.liyuan.social.SocialWebAutoConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.social.oauth2.OAuth2Parameters;
 
 @Configuration
 @ConditionalOnClass({SocialConfigurerAdapter.class, GithubConnectionFactory.class})
@@ -34,11 +36,15 @@ public class GithubAutoConfiguration {
             this.githubProperties = githubProperties;
         }
 
-//        @Bean
+//        @Value("${spring.social.github.redirect_uri}")
+//        private String callbackUrl;
         protected ConnectionFactory<Github> createConnectionFactory() {
             GithubConnectionFactory factory = new GithubConnectionFactory(githubProperties.getClientId(), githubProperties.getClientSecret());
+//            OAuth2Parameters parameters = new OAuth2Parameters();
+//            parameters.setRedirectUri(callbackUrl);
             factory.setScope(githubProperties.getScope());
             return factory;
         }
+
     }
 }

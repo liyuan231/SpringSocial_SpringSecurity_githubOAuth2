@@ -5,8 +5,19 @@
     <title>登录</title>
 </head>
 <body>
-    <form action="/signin/github" target="_blank" method="post">
-        <button type="submit">Github登录</button>
-    </form>
+<form action="/auth/github" target="_blank" method="post">
+    <button type="submit">Github绑定(登录) /auth/github</button>
+</form>
+<form action="/signin/github" target="_blank" method="post">
+    <button type="submit">Github绑定(登录) /signin/github</button>
+</form>
+<form action="/connect/github" target="_blank" method="post">
+    <p>此标签由于redirect_uri为/connect/github ，因此无法绑定成功！</p>
+    <button type="submit">Github绑定 /connect/github</button>
+</form>
+<form action="/connect/github" method="post">
+    <input id="method" type="hidden" name="_method" value="delete"/>
+    <button>Github解绑</button>
+</form>
 </body>
 </html>

@@ -10,17 +10,26 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.security.SpringSocialConfigurer;
+import org.springframework.web.servlet.View;
 
 import javax.sql.DataSource;
 
 @Configuration
 public class SpringSocialConfig extends SpringSocialConfigurer {
+
+//    private String processSuccessUrl = "/github/success";
+
+    @Override
+    public SpringSocialConfigurer defaultFailureUrl(String defaultFailureUrl) {
+        return super.defaultFailureUrl(defaultFailureUrl);
+    }
+
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
     @Autowired
-    ConnectionFactoryLocator connectionFactoryLocator;
+    private ConnectionFactoryLocator connectionFactoryLocator;
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Bean
     @Primary
@@ -42,6 +51,12 @@ public class SpringSocialConfig extends SpringSocialConfigurer {
                 new SpringSecuritySignInAdapter());
 //        controller.setSignUpUrl("/register");
         return controller;
+    }
+
+
+    @Bean({"connect/status", "connect/githubConnect", "connect/githubConnected"})
+    public View connectView() {
+        return new ConnectView();
     }
 
 }

@@ -53,7 +53,7 @@ class TuneJdbcConnectionRepository implements ConnectionRepository {
 	}
 	
 	public MultiValueMap<String, Connection<?>> findAllConnections() {
-		List<Connection<?>> resultList = jdbcTemplate.query(selectFromUserConnection() + " where userId = ? grade by providerId, grade", connectionMapper, userId);
+		List<Connection<?>> resultList = jdbcTemplate.query(selectFromUserConnection() + " where userId = ? order by providerId, grade", connectionMapper, userId);
 		MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<String, Connection<?>>();
 		Set<String> registeredProviderIds = connectionFactoryLocator.registeredProviderIds();
 		for (String registeredProviderId : registeredProviderIds) {
@@ -70,7 +70,7 @@ class TuneJdbcConnectionRepository implements ConnectionRepository {
 	}
 
 	public List<Connection<?>> findConnections(String providerId) {
-		return jdbcTemplate.query(selectFromUserConnection() + " where userId = ? and providerId = ? grade by grade", connectionMapper, userId, providerId);
+		return jdbcTemplate.query(selectFromUserConnection() + " where userId = ? and providerId = ? order by grade", connectionMapper, userId, providerId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ class TuneJdbcConnectionRepository implements ConnectionRepository {
 				providerUsersCriteriaSql.append(" or " );
 			}
 		}
-		List<Connection<?>> resultList = new NamedParameterJdbcTemplate(jdbcTemplate).query(selectFromUserConnection() + " where userId = :userId and " + providerUsersCriteriaSql + " grade by providerId, grade", parameters, connectionMapper);
+		List<Connection<?>> resultList = new NamedParameterJdbcTemplate(jdbcTemplate).query(selectFromUserConnection() + " where userId = :userId and " + providerUsersCriteriaSql + " order by providerId, grade", parameters, connectionMapper);
 		MultiValueMap<String, Connection<?>> connectionsForUsers = new LinkedMultiValueMap<String, Connection<?>>();
 		for (Connection<?> connection : resultList) {
 			String providerId = connection.getKey().getProviderId();
@@ -182,7 +182,7 @@ class TuneJdbcConnectionRepository implements ConnectionRepository {
 	}
 	
 	private Connection<?> findPrimaryConnection(String providerId) {
-		List<Connection<?>> connections = jdbcTemplate.query(selectFromUserConnection() + " where userId = ? and providerId = ? grade by grade", connectionMapper, userId, providerId);
+		List<Connection<?>> connections = jdbcTemplate.query(selectFromUserConnection() + " where userId = ? and providerId = ? order by grade", connectionMapper, userId, providerId);
 		if (connections.size() > 0) {
 			return connections.get(0);
 		} else {

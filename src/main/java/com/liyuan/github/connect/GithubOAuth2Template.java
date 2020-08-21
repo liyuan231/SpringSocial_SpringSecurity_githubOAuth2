@@ -22,6 +22,7 @@ public class GithubOAuth2Template extends OAuth2Template {
                                 String authorizeUrl,
                                 String accessTokenUrl) {
         super(clientId, clientSecret, authorizeUrl, accessTokenUrl);
+        setUseParametersForClientAuthentication(true);
     }
 
     public GithubOAuth2Template(String clientId,

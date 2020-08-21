@@ -27,8 +27,8 @@ public class TestController {
         return "Liyuan-GET";
     }
 
-    @Autowired
-    ProviderSignInUtils providerSignInUtils;
+//    @Autowired
+//    ProviderSignInUtils providerSignInUtils;
 
 //    @RequestMapping(value="/signup", method=RequestMethod.POST)
 //    public String signup(@Valid SignupForm form, BindingResult formBinding, WebRequest request) {
@@ -48,7 +48,7 @@ public class TestController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupForm(WebRequest request) {
-        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+//        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
 
 //        connection.get
 //        connection.get

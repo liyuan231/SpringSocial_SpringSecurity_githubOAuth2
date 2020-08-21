@@ -15,4 +15,5 @@ public abstract class SocialAutoConfigurerAdapter extends SocialConfigurerAdapte
 
     protected abstract ConnectionFactory<?> createConnectionFactory();
 
+
 }
