@@ -1,4 +1,4 @@
-package com.liyuan.config;
+package com.liyuan.utils.jwt;
 
 import com.liyuan.model.RestBody;
 import com.liyuan.utils.ResponseUtil;
@@ -32,7 +32,7 @@ import java.util.*;
 @Configuration
 @ConditionalOnProperty(prefix = "jwt.config",name = "enabled")
 @EnableConfigurationProperties(JwtProperties.class)
-public class JwtConfig {
+public class JwtConfiguration {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Bean

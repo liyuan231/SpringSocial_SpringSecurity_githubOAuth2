@@ -6,6 +6,11 @@
       "sourceType": "com.liyuan.utils.jwt.JwtProperties"
     },
     {
+      "name": "qcloud.api",
+      "type": "com.liyuan.utils.qcloud.QCloudProperties",
+      "sourceType": "com.liyuan.utils.qcloud.QCloudProperties"
+    },
+    {
       "name": "spring.social.github",
       "type": "com.liyuan.github.autoconfiguration.GithubProperties",
       "sourceType": "com.liyuan.github.autoconfiguration.GithubProperties"
@@ -59,6 +64,32 @@
       "name": "jwt.config.subscriber",
       "type": "java.lang.String",
       "sourceType": "com.liyuan.utils.jwt.JwtProperties"
+    },
+    {
+      "name": "qcloud.api.app-id",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.qcloud.QCloudProperties"
+    },
+    {
+      "name": "qcloud.api.bucket-name",
+      "type": "java.lang.String",
+      "description": "用一个存储桶就可以了，因为在这个桶里面也可以新建文件夹",
+      "sourceType": "com.liyuan.utils.qcloud.QCloudProperties"
+    },
+    {
+      "name": "qcloud.api.region-name",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.qcloud.QCloudProperties"
+    },
+    {
+      "name": "qcloud.api.secret-id",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.qcloud.QCloudProperties"
+    },
+    {
+      "name": "qcloud.api.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "com.liyuan.utils.qcloud.QCloudProperties"
     },
     {
       "name": "spring.social.github.client-id",
