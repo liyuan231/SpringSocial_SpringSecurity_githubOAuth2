@@ -18,7 +18,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
     }
 
     /**
-     * 此处用于验证第三方用户是否在本地用户表中有数据，若有直接返回，我这里不设置本地用户表
+     * TODO 此处用于验证第三方用户是否在本地用户表中有数据，若有直接返回，我这里暂时不设置本地用户表以及角色权限表，之后再改
      *
      * @param userId
      * @return
@@ -30,6 +30,6 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 //        throw new UsernameNotFoundException("test");
         return new SocialUser(userId, "password",
                 true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("test"));
     }
 }

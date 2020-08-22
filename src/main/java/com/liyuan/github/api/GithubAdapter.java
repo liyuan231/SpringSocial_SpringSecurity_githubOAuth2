@@ -24,7 +24,7 @@ public class GithubAdapter implements ApiAdapter<Github> {
     @Override
     public void setConnectionValues(Github api, ConnectionValues values) {
         user = api.userOperations().getUserProfile(id);
-        values.setProviderUserId(user.getId());
+        values.setProviderUserId(user.getUserId());
         values.setDisplayName(user.getLogin());
         values.setImageUrl(user.getAvatar_url());
     }

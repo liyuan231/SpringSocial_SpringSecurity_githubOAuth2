@@ -5,10 +5,10 @@ import com.liyuan.github.UrlConstants;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.client.RestOperations;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TODO 获取用户信息
@@ -41,12 +41,15 @@ public class UserTemplate implements UserOperations {
         System.out.println(JSONObject.toJSONString(map));
         HttpEntity<String> formEntity = new HttpEntity<>(JSONObject.toJSONString(map), headers);
         Map userInfoMap = restOperations.postForObject(UrlConstants.USERINFO_API_URL, formEntity, Map.class);
-
-        User user = new User();
-        user.setId(String.valueOf(userInfoMap.get("id")));
-        user.setLogin((String) userInfoMap.get("login"));
-        user.setAvatar_url((String) userInfoMap.get("avatar_url"));
-        user.setEmail((String) userInfoMap.get("email"));
+        assert userInfoMap != null;
+        String userId = String.valueOf(userInfoMap.get("id"));
+        String username = (String) userInfoMap.get("login");
+        String avatarUrl = (String) userInfoMap.get("avatar_url");
+        String email = (String) userInfoMap.get("email");
+        //TODO 此处权限应当从数据库中获取
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add((GrantedAuthority) () -> "test");
+        User user = new User(username, "", authorities, userId, username, avatarUrl, email);
         System.out.println("获取Github用户成功！" + user.toString());
         return user;
     }

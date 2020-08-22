@@ -24,6 +24,12 @@
       "defaultValue": 0
     },
     {
+      "name": "jwt.config.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.liyuan.utils.jwt.JwtProperties",
+      "defaultValue": false
+    },
+    {
       "name": "jwt.config.issuer",
       "type": "java.lang.String",
       "sourceType": "com.liyuan.utils.jwt.JwtProperties"

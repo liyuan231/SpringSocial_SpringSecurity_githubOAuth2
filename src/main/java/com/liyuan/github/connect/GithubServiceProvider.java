@@ -17,7 +17,7 @@ public class GithubServiceProvider<T extends Github> extends AbstractOAuth2Servi
                                                     String clientSecret,
                                                     String REQUEST_USER_IDENTITY) {
         System.out.println("org.springframework.social.oauth2.OAuth2Template");
-        System.out.println(clientId);
+        System.out.println("clientId:"+clientId);
         OAuth2Template oAuth2Template = new GithubOAuth2Template(clientId,
                 clientSecret,
                 REQUEST_USER_IDENTITY,

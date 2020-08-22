@@ -91,6 +91,6 @@ public class JwtPayloadBuilder {
             payload.putAll(additional);
         }
         payload.put("roles", JSONObject.toJSONString(this.roles));
-        return JSONObject.toJSONString(JSONObject.toJSONString(payload));
+        return JSONObject.toJSONString(payload);
     }
 }

@@ -1,6 +1,8 @@
 package com.liyuan.utils.jwt;
 
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
@@ -61,20 +63,27 @@ public class JwtTokenGenerator {
         return JwtHelper.encode(payload, signer).getEncoded();
     }
 
-    public JSONObject decodeAndVerify(String jwtToken) {
+    public JSONObject decodeAndVerify(String jwtToken) throws InternalAuthenticationServiceException {
         Assert.hasText(jwtToken, "jwtToken must not be null!");
         RSAPublicKey rsaPublicKey = (RSAPublicKey) this.keyPair.getPublic();
         SignatureVerifier signatureVerifier = new RsaVerifier(rsaPublicKey);
         Jwt jwt = JwtHelper.decodeAndVerify(jwtToken, signatureVerifier);
         String claims = jwt.getClaims();
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(claims);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(claims);
+        } catch (JSONException e) {
+            throw new InternalAuthenticationServiceException("can not cast to JSONObject.");
+        }
+        System.out.println(jsonObject);
         String expireAt = jsonObject.getString(JWT_EXP_KEY);
         if (isExpire(expireAt)) {
             throw new IllegalStateException("jwt token is expired!");
         }
         return jsonObject;
     }
-    private boolean isExpire(String expireAt){
+
+    private boolean isExpire(String expireAt) {
         return LocalDateTime.now().isAfter(LocalDateTime.parse(expireAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 

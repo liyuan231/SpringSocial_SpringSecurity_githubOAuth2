@@ -1,18 +1,27 @@
 package com.liyuan.config;
 
-import com.liyuan.handler.LoginFailureHandler;
-import com.liyuan.handler.LoginSuccessHandler;
+import com.liyuan.handler.SimpleAccessDeniedHandler;
+import com.liyuan.exception.SimpleAuthenticationEntryPoint;
+import com.liyuan.filter.JwtAuthenticationTokenFilter;
+import com.liyuan.handler.CustomLogoutSuccessHandler;
+import com.liyuan.utils.jwt.JwtTokenCacheStorage;
+import com.liyuan.utils.jwt.JwtTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.social.security.SocialAuthenticationFailureHandler;
 import org.springframework.social.security.SocialAuthenticationFilter;
 
@@ -20,6 +29,7 @@ import org.springframework.social.security.SocialAuthenticationFilter;
  * 因为自动开启了CSRF保护，CsrfFilter因此仅GET，HEAD，TRACE，OPTIONS放行
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("myUserDetailsService")
     @Autowired
@@ -28,9 +38,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private SpringSocialConfig springSocialConfig;
 
     @Autowired
-    LoginSuccessHandler loginSuccessHandler;
+    AuthenticationSuccessHandler jwtLoginSuccessHandler;
     @Autowired
-    LoginFailureHandler loginFailureHandler;
+    AuthenticationFailureHandler jwtLoginFailureHandler;
+
+    @Autowired
+    JwtTokenGenerator jwtTokenGenerator;
+    @Autowired
+    JwtTokenCacheStorage jwtTokenCacheStorage;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,7 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().disable();
+        http.formLogin()
+                .successHandler(jwtLoginSuccessHandler)
+                .failureHandler(jwtLoginFailureHandler);
+        http.logout().logoutSuccessHandler(new CustomLogoutSuccessHandler());
 //        http.oauth2Login();
         http.authorizeRequests().antMatchers("/signin/**", "/connect/**").permitAll();
 //        http.csrf().ignoringAntMatchers("/signin/**");//Csrf放行
@@ -49,11 +67,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.userDetailsService(userDetailsService);
 //        springSocialConfig.alwaysUsePostLoginUrl(true);
 //        springSocialConfig.postLoginUrl("/signin/github");
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.exceptionHandling().accessDeniedHandler(new SimpleAccessDeniedHandler()).authenticationEntryPoint(new SimpleAuthenticationEntryPoint());
+        http.addFilterBefore(new JwtAuthenticationTokenFilter(jwtTokenGenerator, jwtTokenCacheStorage), UsernamePasswordAuthenticationFilter.class);
         springSocialConfig.addObjectPostProcessor(new ObjectPostProcessor<SocialAuthenticationFilter>() {
             @Override
             public <O extends SocialAuthenticationFilter> O postProcess(O filter) {
-                filter.setAuthenticationSuccessHandler(loginSuccessHandler);
-                filter.setAuthenticationFailureHandler(new SocialAuthenticationFailureHandler(loginFailureHandler));
+                filter.setAuthenticationSuccessHandler(jwtLoginSuccessHandler);
+                filter.setAuthenticationFailureHandler(new SocialAuthenticationFailureHandler(jwtLoginFailureHandler));
                 return filter;
             }
         });

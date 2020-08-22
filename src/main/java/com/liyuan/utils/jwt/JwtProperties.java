@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "jwt.config")
 public class JwtProperties {
+    private boolean enabled;
     private String keyLocation;
     private String keyAlias;
     private String keyPass;
@@ -11,6 +12,14 @@ public class JwtProperties {
     private String subscriber;
     private int accessExpireDays;
     private int refreshExpireDays;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getKeyLocation() {
         return keyLocation;
