@@ -19,8 +19,8 @@ public class OSSTest {
     @Test
     public void test1() {
         COSCredentials cosCredentials = new BasicCOSCredentials(
-                "AKIDsjKkunCxe5SEl2w8H1ViNXS8gyzkqE6D",
-                "zjmo3dxIOjdIkwwglbBXdVwaeRS7rLYj");
+                "AKIDsjKkunCxe5SEl2w8H1ViNXS8gyzkqE6DLIYUAN",
+                "zjmo3dxIOjdIkwwglbBXdVwaeRS7rLYjLIYUAN");
         Region region = new Region("ap-guangzhou");
         ClientConfig clientConfig = new ClientConfig(region);
         COSClient cosClient = new COSClient(cosCredentials, clientConfig);
