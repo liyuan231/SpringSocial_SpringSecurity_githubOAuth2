@@ -27,9 +27,15 @@ public class TestController {
     }
 
     @GetMapping("/test")
-    @PreAuthorize("hasAuthority('test1')")
+    @PreAuthorize("hasAuthority('/test')")
     public String testAuthority() {
-        return "you have the authority!";
+        return "you have the authority->'/test'!";
+    }
+
+    @GetMapping("/test1")
+    @PreAuthorize("hasAuthority('/test1')")
+    public String test1AUthority(){
+        return "you have the authority->'/test1'!";
     }
 //    @Autowired
 //    ProviderSignInUtils providerSignInUtils;

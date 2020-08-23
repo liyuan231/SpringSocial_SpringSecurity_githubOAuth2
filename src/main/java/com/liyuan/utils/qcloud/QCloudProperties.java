@@ -5,7 +5,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "qcloud.api")
-@Validated
 public class QCloudProperties {
     private String secretId;
     private String secretKey;
@@ -65,7 +64,7 @@ public class QCloudProperties {
     }
 
     public void setRegionName(String regionName) {
-        if (!StringUtils.hasText(secretId)) {
+        if (!StringUtils.hasText(regionName)) {
             throw new IllegalArgumentException("The regionName should not be empty!");
         }
         this.regionName = regionName;

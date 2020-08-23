@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.social.security.SocialAuthenticationFailureHandler;
 import org.springframework.social.security.SocialAuthenticationFilter;
 
@@ -41,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     AuthenticationSuccessHandler jwtLoginSuccessHandler;
     @Autowired
     AuthenticationFailureHandler jwtLoginFailureHandler;
+    @Autowired
+    LogoutSuccessHandler jwtLogoutSuccessHandler;
 
     @Autowired
     JwtTokenGenerator jwtTokenGenerator;
@@ -57,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .successHandler(jwtLoginSuccessHandler)
                 .failureHandler(jwtLoginFailureHandler);
-        http.logout().logoutSuccessHandler(new CustomLogoutSuccessHandler());
+        http.logout().logoutSuccessHandler(jwtLogoutSuccessHandler);
 //        http.oauth2Login();
         http.authorizeRequests().antMatchers("/signin/**", "/connect/**").permitAll();
 //        http.csrf().ignoringAntMatchers("/signin/**");//Csrf放行

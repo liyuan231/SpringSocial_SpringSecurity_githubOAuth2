@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.net.HttpHeaders;
 import com.liyuan.exception.SimpleAuthenticationEntryPoint;
+import com.liyuan.model.SysUser;
 import com.liyuan.utils.jwt.JwtTokenCacheStorage;
 import com.liyuan.utils.jwt.JwtTokenGenerator;
 import org.springframework.security.authentication.*;
@@ -11,7 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
@@ -22,8 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 拦截jwt认证
@@ -71,8 +70,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                            HttpServletRequest request) throws BadCredentialsException, CredentialsExpiredException, InternalAuthenticationServiceException {
         JSONObject jsonObject = jwtTokenGenerator.decodeAndVerify(jwtToken);
         if (Objects.nonNull(jsonObject)) {
-            //只有username是通用的，是不是意味着需要把username设置为唯一
-            String username = jsonObject.getString("audience");
+            //只有username是通用的，是不是意味着需要把username设置为唯一,这里修改了，将audience变为userId，这样就保证是唯一的
+            String userId = jsonObject.getString("audience");
             //从缓存中获取token
 //            JwtTokenPair jwtTokenPair = jwtTokenCacheStorage.get(username);
             //说实话，缓存什么的还是不大理解，因此就先注释掉
@@ -84,11 +83,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 //            }
 //            String accessToken = jwtTokenPair.getAccessToken();
 //            if (jwtToken.equals(accessToken)) {
-            JSONArray jsonArray = jsonObject.getJSONArray("roles");
-            List<String> roles = jsonArray.toJavaList(String.class);
-            String[] roleArr = roles.toArray(new String[0]);
-            List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(roleArr);
-            User user = new User(username, "[PASSWORD]", authorities);
+            JSONArray authoritiesJSONArray = jsonObject.getJSONArray("authorities");
+            Iterator<Object> iterator = authoritiesJSONArray.iterator();
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            while (iterator.hasNext()) {
+                JSONObject next = (JSONObject) iterator.next();
+                authorities.add((GrantedAuthority) () -> next.getString("authority"));
+            }
+            SysUser user = new SysUser("[USERNAME]", "[PASSWORD]", authorities, userId, null);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

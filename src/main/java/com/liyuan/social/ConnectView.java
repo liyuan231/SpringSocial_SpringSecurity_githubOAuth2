@@ -1,4 +1,4 @@
-package com.liyuan.config;
+package com.liyuan.social;
 
 import com.liyuan.model.RestBody;
 import com.liyuan.utils.ResponseUtil;

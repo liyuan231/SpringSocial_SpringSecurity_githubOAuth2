@@ -3,10 +3,7 @@ package com.liyuan.utils.qcloud;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.http.HttpMethodName;
-import com.qcloud.cos.model.Bucket;
-import com.qcloud.cos.model.GeneratePresignedUrlRequest;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -65,6 +62,10 @@ public class QCloudCosUtils {
         URL url = cosClient.generatePresignedUrl(request);
         logger.debug("上传文件成功！");
         return url;
+    }
+
+    public ObjectListing listObjects(){
+        return cosClient.listObjects(this.qCloudProperties.getBucketName());
     }
 
 

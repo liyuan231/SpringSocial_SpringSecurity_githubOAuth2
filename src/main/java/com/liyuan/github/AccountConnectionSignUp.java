@@ -1,5 +1,6 @@
 package com.liyuan.github;
 
+import com.liyuan.model.RoleType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
@@ -15,11 +16,19 @@ public class AccountConnectionSignUp implements ConnectionSignUp {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * TODO 此处需要设计github账号表
+     * @param connection
+     * @return
+     */
     @Override
     public String execute(Connection<?> connection) {
-        //TODO 此处没什么思路,目前将时间戳作为userId
-        connection.getKey().getProviderUserId();
-        long l = System.currentTimeMillis();
-        return String.valueOf(l);
+        //用户在github上的账号
+        String providerUserId = connection.getKey().getProviderUserId();
+        //将当前时间戳作为用户的账号,既然userconnection处已经有了第三方的账号了，那我何必在重新写里面的信息？？
+        String userId = String.valueOf(System.currentTimeMillis());
+        //插入githubUser表一个用户
+        jdbcTemplate.update("insert into sysuser(userId,roleId) values(?,?)",userId, RoleType.ORDINARY.value());
+        return userId;
     }
 }

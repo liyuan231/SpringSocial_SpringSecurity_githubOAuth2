@@ -5,14 +5,12 @@ import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 
 public class GithubAdapter implements ApiAdapter<Github> {
-    private User user;
-    private String id;
+    private GithubUser user;
 
     public GithubAdapter() {
     }
 
     public GithubAdapter(String id) {
-        this.id = id;
     }
 
     @Override
@@ -23,15 +21,17 @@ public class GithubAdapter implements ApiAdapter<Github> {
 
     @Override
     public void setConnectionValues(Github api, ConnectionValues values) {
-        user = api.userOperations().getUserProfile(id);
-        values.setProviderUserId(user.getUserId());
-        values.setDisplayName(user.getLogin());
+        user = api.userOperations().getUserProfile();
+        values.setProviderUserId(user.getProviderUserId());
+        values.setDisplayName(user.getUsername());
         values.setImageUrl(user.getAvatar_url());
     }
 
     @Override
     public UserProfile fetchUserProfile(Github api) {
-        throw new UnsupportedOperationException("不想实现这个-》com.liyuan.github.api.GithubAdapter.fetchUserProfile");
+//        api.userOperations().getUserProfile();
+//        return user;
+        throw new UnsupportedOperationException("不想实现这个,因为github实在太卡了-》com.liyuan.github.api.GithubAdapter.fetchUserProfile");
 //        return new UserProfile(id, null, );
     }
 

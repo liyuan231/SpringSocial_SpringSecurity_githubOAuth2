@@ -1,18 +1,19 @@
 package com.liyuan.utils.jwt;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class JwtPayloadBuilder {
-    private Map<String, String> payload = new HashMap<>();
+    private Map<String, Object> payload = new HashMap<>();
     /**
      * 附加的属性
      */
@@ -38,9 +39,10 @@ public class JwtPayloadBuilder {
      **/
     private LocalDateTime issueAt = LocalDateTime.now();
     /**
-     * 权限集
+     * role：职能
+     * authority：权限，这样一看二者是等价的
      */
-    private Set<String> roles = new HashSet<>();
+    private Collection<GrantedAuthority> authorities;
     /**
      * jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击
      **/
@@ -63,8 +65,8 @@ public class JwtPayloadBuilder {
     }
 
 
-    public JwtPayloadBuilder roles(Set<String> roles) {
-        this.roles = roles;
+    public JwtPayloadBuilder authorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
         return this;
     }
 
@@ -90,7 +92,7 @@ public class JwtPayloadBuilder {
         if (!CollectionUtils.isEmpty(additional)) {
             payload.putAll(additional);
         }
-        payload.put("roles", JSONObject.toJSONString(this.roles));
+        payload.put("authorities", this.authorities);
         return JSONObject.toJSONString(payload);
     }
 }

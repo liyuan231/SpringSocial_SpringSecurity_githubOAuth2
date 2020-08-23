@@ -3,6 +3,7 @@ package com.liyuan.utils.jwt;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
@@ -15,6 +16,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,10 +38,10 @@ public class JwtTokenGenerator {
     }
 
     public JwtTokenPair jwtTokenPair(String audience,
-                                     Set<String> roles,
+                                     Collection<GrantedAuthority> authorities,
                                      Map<String, String> additional) {
-        String accessToken = jwtToken(audience, jwtProperties.getAccessExpireDays(), roles, additional);
-        String refreshToken = jwtToken(audience, jwtProperties.getRefreshExpireDays(), roles, additional);
+        String accessToken = jwtToken(audience, jwtProperties.getAccessExpireDays(), authorities, additional);
+        String refreshToken = jwtToken(audience, jwtProperties.getRefreshExpireDays(), authorities, additional);
         JwtTokenPair jwtTokenPair = new JwtTokenPair();
         jwtTokenPair.setAccessToken(accessToken);
         jwtTokenPair.setRefreshToken(refreshToken);
@@ -49,13 +51,13 @@ public class JwtTokenGenerator {
 
     private String jwtToken(String audience,
                             int expireDays,
-                            Set<String> roles,
+                            Collection<GrantedAuthority> authorities,
                             Map<String, String> additional) {
         String payload = jwtPayloadBuilder
                 .issuer(jwtProperties.getIssuer())
                 .subscriber(jwtProperties.getSubscriber())
                 .audience(audience)
-                .roles(roles)
+                .authorities(authorities)
                 .expireDays(expireDays)
                 .builder();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();

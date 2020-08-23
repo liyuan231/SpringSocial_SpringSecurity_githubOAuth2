@@ -1,9 +1,12 @@
 package com.liyuan.config;
 
 import com.liyuan.github.AccountConnectionSignUp;
+import com.liyuan.social.ConnectView;
+import com.liyuan.social.SpringSecuritySignInAdapter;
 import com.liyuan.social.jdbc.TuneJdbcUsersConnectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -59,4 +62,8 @@ public class SpringSocialConfig extends SpringSocialConfigurer {
         return new ConnectView();
     }
 
+    @Bean
+    public ColumnMapRowMapper columnMapRowMapper() {
+        return new ColumnMapRowMapper();
+    }
 }

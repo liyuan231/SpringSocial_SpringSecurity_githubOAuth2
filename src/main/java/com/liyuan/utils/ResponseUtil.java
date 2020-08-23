@@ -23,7 +23,6 @@ public class ResponseUtil {
         printWriter.print(resposneBody);
         printWriter.flush();
         printWriter.close();
-
     }
 
 }
