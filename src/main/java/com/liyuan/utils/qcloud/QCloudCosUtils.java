@@ -10,6 +10,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
@@ -58,6 +60,19 @@ public class QCloudCosUtils {
         }
         PutObjectRequest putObjectRequest = new PutObjectRequest(this.qCloudProperties.getBucketName(), key, file);
         PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(qCloudProperties.getBucketName(), key, HttpMethodName.GET);
+        URL url = cosClient.generatePresignedUrl(request);
+        logger.debug("上传文件成功！");
+        return url;
+    }
+    public URL upload(String key, InputStream inputStream) {
+        if (!StringUtils.hasText(key)) {
+            throw new IllegalArgumentException("The key should not be empty!");
+        }
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+//        objectMetadata.setContentLength(inputStream.available());//此处需要限制缓冲的文件的大小，我这里不做限制，交给前端处理
+        PutObjectRequest putObjectRequest = new PutObjectRequest(this.qCloudProperties.getBucketName(),key,inputStream,objectMetadata);
+        cosClient.putObject(putObjectRequest);
         GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(qCloudProperties.getBucketName(), key, HttpMethodName.GET);
         URL url = cosClient.generatePresignedUrl(request);
         logger.debug("上传文件成功！");

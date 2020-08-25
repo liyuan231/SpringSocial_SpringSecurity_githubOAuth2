@@ -7,7 +7,11 @@ import com.qcloud.cos.model.COSObjectSummary;
 import com.qcloud.cos.model.ObjectListing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,5 +40,15 @@ public class OSSServiceImpl implements OSSService {
     @Override
     public void delete(String key) {
         qCloudCosUtils.delete(key);
+    }
+
+    @Override
+    public URL upload(String filename, File file) {
+        return qCloudCosUtils.upload(filename,  file);
+    }
+
+    @Override
+    public URL upload(String filename, InputStream file) {
+        return qCloudCosUtils.upload(filename,  file);
     }
 }

@@ -40,7 +40,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 
 
     /**
-     * TODO 此处用于验证第三方用户是否在本地用户表中有数据，若有直接返回，我这里暂时不设置本地用户表以及角色权限表，之后再改
+     *
      *
      * @param userId
      * @return
@@ -53,7 +53,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
         //TODO 这里有待测试
         List<Map<String, Object>> query = jdbcTemplate.query("select * from sysuser where userId=?", columnMapRowMapper, userId);
         if (query.size() == 0) {
-            throw new UsernameNotFoundException("用户名找不到！，请先注册！");
+            throw new UsernameNotFoundException("用户名找不到！请先注册！");
         }
         Map<String, Object> result = null;
         result = query.get(0);
